@@ -1,0 +1,11 @@
+main {
+    padding: 2rem 0;
+}
+
+.welcome {
+    padding: 3rem 0;
+    background-color: #eee;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+}
