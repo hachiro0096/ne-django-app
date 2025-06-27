@@ -1,12 +1,10 @@
 {% extends "snippets/base.html" %}
-
-{% load django_bootstrap5 %}
-
-{% block main %}
-<h2>新規メモ登録</h2>
+{% block content %}
+<h2>学習記録の追加</h2>
 <form method="post">
-    {% csrf_token %}
-    {% bootstrap_form form %}
-    {% bootstrap_button button_type='submit' content='登録' %}
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">保存</button>
 </form>
+<a href="{% url 'log_list' %}">戻る</a>
 {% endblock %}

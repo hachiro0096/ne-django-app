@@ -1,7 +1,10 @@
 from django import forms
-from helloworld.models import Helloworld
+from .models import StudyLog
 
-class SnippetForm(forms.ModelForm):
+class StudyLogForm(forms.ModelForm):
     class Meta:
-        model = Helloworld
-        fields = ('title','code','description')
+        model = StudyLog
+        fields = ['content']
+        widgets = {
+            'content': forms.Textarea(attrs={'rows': 4, 'placeholder': '今日の学習内容を記入'})
+        }

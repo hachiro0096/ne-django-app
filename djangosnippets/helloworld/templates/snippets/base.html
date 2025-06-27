@@ -1,43 +1,26 @@
-
-
 {% load static %}
-{% load django_bootstrap5 %}
 <!DOCTYPE html>
-<html lang="ja">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>Django スニペット</title>
-  {% bootstrap_css %}{% bootstrap_javascript %}
+  <title>StudyMate</title>
   <link rel="stylesheet" href="{% static 'snippets/css/style.css' %}">
 </head>
 <body>
-  <nav class="navbar navbar-expand navbar-dark bg-dark">
-    <div class="container justify-content-between">
-      <a class="navbar-brand" href="/">Django スニペット</a>
-      <ul class="navbar-nav">
-        {% if user.is_authenticated %}
-          <li class="nav-item">
-            <form action="{% url 'logout' %}" method="post" class="d-inline">
-              {% csrf_token %}
-              <button type="submit" class="btn btn-link nav-link p-0">ログアウト</button>
-            </form>
-          </li>
-        {% else %}
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'login' %}">ログイン</a>
-             <a class=nav-link" href="{% url 'signup' %}">会員登録</a>
-          </li>
-        {% endif %}
-      </ul>
-    </div>
-  </nav>
-
-  <main class="container">
-    {% block main %}
-    {% endblock %}
+  <header>
+    <h1>StudyMate</h1>
+    <nav>
+      <a href="{% url 'log_list' %}">ホーム</a>
+      {% if user.is_authenticated %}
+        <span>こんにちは、{{ user.username }} さん</span>
+        <a href="{% url 'logout' %}">ログアウト</a>
+      {% else %}
+        <a href="{% url 'login' %}">ログイン</a>
+        <a href="{% url 'signup' %}">新規登録</a>
+      {% endif %}
+    </nav>
+  </header>
+  <main>
+    {% block content %}{% endblock %}
   </main>
 </body>
 </html>
-
-
-

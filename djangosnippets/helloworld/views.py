@@ -1,46 +1,55 @@
-from django.http import HttpResponse, HttpResponseForbidden
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
+from .models import StudyLog
+from .forms import StudyLogForm
 from django.contrib.auth.decorators import login_required
-from helloworld.models import Helloworld
-from helloworld.forms import SnippetForm
 
+@login_required
+def log_list(request):
+    logs = StudyLog.objects.filter(user=request.user).order_by('-date')
+    total_points = logs.aggregate(total=models.Sum('points'))['total'] or 0
+    return render(request, 'snippets/log_list.html', {
+        'logs': logs,
+        'total_points': total_points,
+    })
 
-# Create your views here.
-def top(request):
-    snippets = Helloworld.objects.all() # Snippetの一覧を取得
-    context = {'snippets': snippets}
-    return render(request, 'snippets/top.html', context)
+@login_required
+def log_list(request):
+    logs = StudyLog.objects.filter(user=request.user).order_by('-date')
+    total_points = logs.aggregate(total=models.Sum('points'))['total'] or 0
 
+    # バッジの計算
+    def get_badge(points):
+        if points >= 100:
+            return "ゴールドバッジ 🥇"
+        elif points >= 50:
+            return "シルバーバッジ 🥈"
+        elif points >= 10:
+            return "ブロンズバッジ 🥉"
+        else:
+            return "ビギナー"
 
-@login_required  # このデコレータのある機能はログインが必要
-def snippet_new(request):
-    if request.method == 'POST':
-        form = SnippetForm(request.POST)
+    badge = get_badge(total_points)
+    return render(request, 'snippets/log_list.html', {
+        'logs': logs,
+        'total_points': total_points,
+        'badge': badge,
+    })
+
+@login_required
+def log_list(request):
+    logs = StudyLog.objects.filter(user=request.user).order_by('-date')
+    return render(request, 'snippets/log_list.html', {'logs': logs})
+
+@login_required
+def log_new(request):
+    if request.method == "POST":
+        form = StudyLogForm(request.POST)
         if form.is_valid():
-            snippet = form.save(commit=False)
-            snippet.created_by = request.user
-            snippet.save()
-            return redirect(snippet_detail, snippet_id=snippet.pk)
+            log = form.save(commit=False)
+            log.user = request.user
+            log.points = min(10, len(log.content) // 10)  # 例：文字数でポイント計算
+            log.save()
+            return redirect('log_list')
     else:
-        form = SnippetForm()
-    return render(request, 'snippets/snippet_new.html', {'form': form})
-
-
-@login_required  # このデコレータのある機能はログインが必要
-def snippet_edit(request, snippet_id):
-    snippet = get_object_or_404(Helloworld, pk=snippet_id)
-    if snippet.created_by_id != request.user.id:
-        return HttpResponseForbidden('このスニペットの編集は許可されていません．')
-    if request.method == 'POST':
-        form = SnippetForm(request.POST, instance=snippet)
-        if form.is_valid():
-            form.save()
-            return redirect('snippet_detail', snippet_id=snippet_id)
-    else:
-        form = SnippetForm(instance=snippet)
-    return render(request, 'snippets/snippet_edit.html', {'form': form})
-
-
-def snippet_detail(request, snippet_id):
-    snippet = get_object_or_404(Helloworld, pk=snippet_id)
-    return render(request, 'snippets/snippet_detail.html', {'snippet': snippet})
+        form = StudyLogForm()
+    return render(request, 'snippets/log_new.html', {'form': form})
