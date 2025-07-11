@@ -2,25 +2,26 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>StudyMate</title>
-  <link rel="stylesheet" href="{% static 'snippets/css/style.css' %}">
+    <title>StudyMate</title>
+    <link rel="stylesheet" href="{% static 'snippets/css/style.css' %}">
 </head>
 <body>
-  <header>
-    <h1>StudyMate</h1>
-    <nav>
-      <a href="{% url 'log_list' %}">ホーム</a>
-      {% if user.is_authenticated %}
-        <span>こんにちは、{{ user.username }} さん</span>
-        <a href="{% url 'logout' %}">ログアウト</a>
-      {% else %}
-        <a href="{% url 'login' %}">ログイン</a>
-        <a href="{% url 'signup' %}">新規登録</a>
-      {% endif %}
-    </nav>
-  </header>
-  <main>
-    {% block content %}{% endblock %}
-  </main>
+    <header>
+        <h1>StudyMate</h1>
+        <nav>
+            <a href="{% url 'log_list' %}">ホーム</a>
+            {% if user.is_authenticated %}
+                <span>こんにちは、{{ user.username }} さん</span>
+                <a href="{% url 'logout' %}">ログアウト</a>
+            {% else %}
+                <a href="{% url 'login' %}">ログイン</a>
+            {% endif %}
+        </nav>
+    </header>
+
+    <!-- ここに各ページごとの内容が入ります -->
+    {% block content %}
+    {% endblock %}
+
 </body>
 </html>
