@@ -1,0 +1,15 @@
+{# djangosnippets/templates/registration/signup.html #}
+{% extends "base.html" %}
+
+{% block content %}
+  <h2>ユーザー登録</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">登録</button>
+  </form>
+  <p>
+    アカウントをお持ちですか？
+    <a href="{% url 'login' %}">ログイン</a>
+  </p>
+{% endblock %}
