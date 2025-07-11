@@ -1,29 +1,63 @@
-<!-- templates/base.html -->
+{% load bootstrap5 %}    {# django-bootstrap5 のタグライブラリをロード #}
 <!DOCTYPE html>
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>{% block title %}MyApp{% endblock %}</title>
-  <!-- CSSやJSの読み込み -->
+  <title>{% block title %}StudyMate{% endblock %}</title>
+  {% bootstrap_css %}    {# Bootstrap の CSS を読み込む #}
+  {% bootstrap_javascript jquery='false' %}  {# Bootstrap の JS を読み込む #}
 </head>
 <body>
   <header>
-    <nav>
-      <a href="{% url 'top' %}">Home</a> |
-      {% if user.is_authenticated %}
-        <a href="{% url 'logout' %}">Logout</a>
-      {% else %}
-        <a href="{% url 'login' %}">Login</a>
-      {% endif %}
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="{% url 'top' %}">StudyMate</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#mainNavbar" aria-controls="mainNavbar"
+                aria-expanded="false" aria-label="メニュー切替">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="mainNavbar">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'top' %}">ホーム</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'log_list' %}">ログ一覧</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'log_new' %}">新規作成</a>
+            </li>
+          </ul>
+          <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+            {% if user.is_authenticated %}
+              <li class="nav-item">
+                <span class="navbar-text">こんにちは、{{ user.username }} さん</span>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'logout' %}">ログアウト</a>
+              </li>
+            {% else %}
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'login' %}">ログイン</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'signup' %}">登録</a>
+              </li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
     </nav>
   </header>
 
-  <main>
+  <main class="container my-4">
     {% block content %}{% endblock %}
   </main>
 
-  <footer>
-    <p>&copy; 2025 MyApp</p>
+  <footer class="text-center py-3">
+    &copy; 2025 StudyMate
   </footer>
 </body>
 </html>
