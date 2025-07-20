@@ -1,0 +1,19 @@
+{% extends "snippets/base.html" %}
+{% block content %}
+<h2>学習ログ削除確認</h2>
+<p>本当にこの学習ログを削除してもよいですか？</p>
+<a href="{% url 'log_edit' log.pk %}">編集</a>
+<a href="{% url 'log_delete' log.pk %}">削除</a>
+<a href="{% url 'log_list' %}">一覧に戻る</a>
+<ul>
+  <li>日付: {{ log.date }}</li>
+  <li>科目: {{ log.get_subject_display }}</li>
+  <li>時間: {{ log.hours }} 時間</li>
+  <li>コメント: {{ log.comment }}</li>
+</ul>
+<form method="post">
+  {% csrf_token %}
+  <button type="submit">削除する</button>
+  <a href="{% url 'log_detail' log.pk %}">キャンセル</a>
+</form>
+{% endblock %}

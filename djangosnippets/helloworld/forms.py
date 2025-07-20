@@ -4,7 +4,8 @@ from .models import StudyLog
 class StudyLogForm(forms.ModelForm):
     class Meta:
         model = StudyLog
-        fields = ['content']
+        fields = ['date', 'subject', 'hours', 'comment']
         widgets = {
-            'content': forms.Textarea(attrs={'rows': 4, 'placeholder': '今日の学習内容を記入'})
+            'date': forms.DateInput(attrs={'type': 'date'}),
+            'comment': forms.Textarea(attrs={'rows': 2}),
         }

@@ -1,0 +1,11 @@
+{% extends "snippets/base.html" %}
+{% block content %}
+<h2>学習ログ詳細</h2>
+<p>日付: {{ log.date }}</p>
+<p>科目: {{ log.get_subject_display }}</p>
+<p>時間: {{ log.hours }} 時間</p>
+<p>コメント: {{ log.comment }}</p>
+<a href="{% url 'log_edit' log.pk %}">編集</a>
+<a href="{% url 'log_delete' log.pk %}">削除</a>
+<a href="{% url 'log_list' %}">一覧に戻る</a>
+{% endblock %}

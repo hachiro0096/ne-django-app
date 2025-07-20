@@ -1,12 +1,10 @@
 {% extends 'snippets/base.html' %}
-{% load django_bootstrap5 %}
-
-{% block main %}
-<h2>ログイン</h2>
-<form method="post">
+{% block content %}
+  <h2>ログイン</h2>
+  <form method="post">
     {% csrf_token %}
-    <input type="hidden" name="next" value="{{ next }}" />
-    {% bootstrap_form form %}
-    {% bootstrap_button button_type='submit' content='ログイン' %}
-</form>
+    {{ form.as_p }}
+    <button type="submit">ログイン</button>
+  </form>
+  <p>アカウントがない方は <a href="{% url 'signup' %}">新規登録</a></p>
 {% endblock %}

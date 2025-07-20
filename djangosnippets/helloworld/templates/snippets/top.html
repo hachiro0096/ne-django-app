@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="ja">
 <head>
@@ -7,14 +8,36 @@
 </head>
 <body>
     <h1>ようこそ、学習ログアプリへ！</h1>
-
     {% if user.is_authenticated %}
         <p>{{ user.username }} さん、こんにちは。</p>
+        <p>あなたのポイント: {{ user.userprofile.points }}</p>
+
+        <h3>あなたのバッジ</h3>
+        <ul>
+        {% for userbadge in user.userbadge_set.all %}
+            <li>{{ userbadge.badge.name }}（{{ userbadge.badge.description }}）</li>
+        {% empty %}
+            <li>まだバッジはありません。</li>
+        {% endfor %}
+        </ul>
+
         <p><a href="{% url 'log_list' %}">ログ一覧を見る</a></p>
         <p><a href="{% url 'log_new' %}">新しいログを書く</a></p>
+        <p><a href="{% url 'dashboard' %}">ダッシュボード</a></p>
         <p><a href="{% url 'logout' %}">ログアウト</a></p>
     {% else %}
-        <p><a href="{% url 'login' %}">ログイン</a> または <a href="{% url 'signup' %}">新規登録</a>してください。</p>
+        <p><a href="{% url 'login' %}">ログイン</a></p>
     {% endif %}
 </body>
 </html>
+
+{% if user.is_authenticated %}
+    <h3>あなたのバッジ</h3>
+    <ul>
+    {% for userbadge in user.userbadge_set.all %}
+        <li>{{ userbadge.badge.name }}（{{ userbadge.badge.description }}）</li>
+    {% empty %}
+        <li>まだバッジはありません。</li>
+    {% endfor %}
+    </ul>
+{% endif %}

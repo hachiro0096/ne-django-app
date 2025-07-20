@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.urls import path, include
 
 urlpatterns = [
-    path('helloworld/', include('helloworld.urls')),
     path('admin/', admin.site.urls),
-    path('accounts/', include('django.contrib.auth.urls')),  # ← これを追加！
+    path('', include('helloworld.urls')),  # アプリ名を適宜
+    path('accounts/', include('django.contrib.auth.urls')),  # ★これを追加
 ]

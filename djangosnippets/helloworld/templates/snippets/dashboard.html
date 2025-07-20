@@ -1,0 +1,40 @@
+{% extends "snippets/base.html" %}
+{% block content %}
+<h2>ダッシュボード</h2>
+<p>直近7日間の学習合計：{{ total_hours }} 時間</p>
+<canvas id="studyChart" width="400" height="150"></canvas>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  const ctx = document.getElementById('studyChart').getContext('2d');
+  const studyChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+          labels: {{ labels|safe }},
+          datasets: [{
+              label: '学習時間 (h)',
+              data: {{ data|safe }},
+              borderWidth: 1
+          }]
+      },
+      options: {
+          scales: {
+              y: {
+                  beginAtZero: true,
+                  suggestedMax: 5
+              }
+          }
+      }
+  });
+</script>
+{% endblock %}
+
+{% if user.is_authenticated %}
+    <h3>あなたのバッジ</h3>
+    <ul>
+    {% for userbadge in user.userbadge_set.all %}
+        <li>{{ userbadge.badge.name }}（{{ userbadge.badge.description }}）</li>
+    {% empty %}
+        <li>まだバッジはありません。</li>
+    {% endfor %}
+    </ul>
+{% endif %}

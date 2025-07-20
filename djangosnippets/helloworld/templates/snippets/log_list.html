@@ -1,12 +1,14 @@
 {% extends "snippets/base.html" %}
 {% block content %}
 <h2>学習ログ一覧</h2>
-<a href="{% url 'log_new' %}">新しい学習記録</a>
+<a href="{% url 'log_new' %}">新しいログを書く</a>
 <ul>
   {% for log in logs %}
-    <li>{{ log.date }}: {{ log.content }}（ポイント: {{ log.points }}）</li>
+    <li>
+      <a href="{% url 'log_detail' log.pk %}">{{ log.date }} - {{ log.get_subject_display }} - {{ log.hours }}h</a>
+    </li>
   {% empty %}
-    <li>まだ記録がありません。</li>
+    <li>ログがありません</li>
   {% endfor %}
 </ul>
 {% endblock %}
