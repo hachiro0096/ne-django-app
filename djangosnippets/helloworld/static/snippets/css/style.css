@@ -1,120 +1,73 @@
-body {
-  background: #f6f8fa;
-  color: #333;
-  font-family: 'Noto Sans JP', 'Segoe UI', Arial, sans-serif;
-  margin: 0;
-  padding: 0;
-  line-height: 1.7;
+.header-nav {
+    background: #2c639b;
+    color: #fff;
+    padding: 10px 20px;
+    position: relative;
 }
-
-header, .header {
-  background: #3a7ca5;
-  color: #fff;
-  padding: 2rem 1rem 1.2rem 1rem;
-  border-radius: 0 0 18px 18px;
-  box-shadow: 0 4px 16px rgba(40,70,120,0.08);
-  margin-bottom: 2em;
-  text-align: left;
+.menu {
+    display: none;
+    flex-direction: column;
+    background: #2c639b;
+    position: absolute;
+    top: 40px;
+    left: 0;
+    width: 200px;
+    z-index: 10;
 }
-
-h1, h2, h3 {
-  font-weight: 600;
-  letter-spacing: 0.03em;
-  margin: 0 0 1em;
+#menu-toggle:checked + .menu-btn + .menu {
+    display: flex;
 }
-
-h1 {
-  font-size: 2.1em;
+.menu-btn {
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+    display: inline-block;
+    vertical-align: middle;
+    position: relative;
 }
-
-h2 {
-  font-size: 1.5em;
-  color: #3576a3;
+.menu-btn span, .menu-btn span:before, .menu-btn span:after {
+    display: block;
+    background: #fff;
+    height: 4px;
+    width: 100%;
+    border-radius: 2px;
+    position: absolute;
+    content: '';
+    transition: .3s;
 }
-
-form {
-  background: #fff;
-  max-width: 480px;
-  margin: 2.5em auto 1em;
-  padding: 2.2em 2em 1.5em 2em;
-  border-radius: 18px;
-  box-shadow: 0 2px 20px rgba(70,110,170,0.11);
-  display: flex;
-  flex-direction: column;
-  gap: 1.2em;
+.menu-btn span {
+    position: relative;
+    top: 13px;
 }
-
-label {
-  font-size: 1em;
-  color: #265a7c;
-  margin-bottom: 0.2em;
+.menu-btn span:before {
+    top: -10px;
+    position: relative;
 }
-
-input[type="text"],
-input[type="date"],
-input[type="number"],
-select,
-textarea {
-  width: 100%;
-  padding: 0.6em 0.9em;
-  border: 1px solid #dde5ee;
-  border-radius: 9px;
-  background: #fafdff;
-  font-size: 1.08em;
-  transition: border 0.18s;
-  box-sizing: border-box;
+.menu-btn span:after {
+    top: 10px;
+    position: relative;
 }
-
-input:focus, select:focus, textarea:focus {
-  border: 1.5px solid #80c2e6;
-  outline: none;
-  background: #f3fbff;
+#menu-toggle {
+    display: none;
 }
-
-button, input[type="submit"] {
-  background: linear-gradient(90deg, #64b6e7 0%, #3576a3 100%);
-  color: #fff;
-  font-weight: 500;
-  border: none;
-  border-radius: 8px;
-  padding: 0.7em 2em;
-  font-size: 1.08em;
-  box-shadow: 0 2px 7px rgba(80,130,170,0.13);
-  cursor: pointer;
-  transition: background 0.17s, box-shadow 0.18s;
-  margin-top: 0.7em;
+@media (min-width: 600px) {
+    .menu {
+        display: flex !important;
+        flex-direction: row;
+        position: static;
+        width: auto;
+        background: none;
+    }
+    .menu-btn {
+        display: none;
+    }
 }
-button:hover, input[type="submit"]:hover {
-  background: linear-gradient(90deg, #3576a3 0%, #64b6e7 100%);
-  box-shadow: 0 4px 16px rgba(44, 86, 140, 0.12);
+.menu a {
+    color: #fff;
+    padding: 10px 20px;
+    text-decoration: none;
+    transition: background .2s;
 }
-
-a {
-  color: #3576a3;
-  text-decoration: none;
-  transition: color 0.15s;
-}
-a:hover {
-  color: #285a7c;
-  text-decoration: underline;
-}
-
-@media (max-width: 600px) {
-  form {
-    max-width: 98vw;
-    padding: 1.2em 0.7em;
-  }
-  header, .header {
-    padding: 1.2em 0.6em;
-    font-size: 1em;
-  }
-}
-
-/* 補足：リストやダッシュボードにも応用できる余白や角丸デザイン */
-section, .card, .box {
-  background: #fff;
-  border-radius: 14px;
-  padding: 1.6em 1.1em;
-  margin: 1.1em 0;
-  box-shadow: 0 1.5px 8px rgba(80,130,170,0.09);
+.menu a:hover {
+    background: #22507c;
 }
