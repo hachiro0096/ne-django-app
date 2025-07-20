@@ -10,6 +10,11 @@ urlpatterns = [
     path('log/<int:pk>/edit/', views.log_edit, name='log_edit'),
     path('log/<int:pk>/delete/', views.log_delete, name='log_delete'),
     path('dashboard/', views.dashboard, name='dashboard'),
+    path('questions/', views.question_list, name='question_list'),
+    path('questions/new/', views.question_new, name='question_new'),
+    path('questions/<int:pk>/', views.question_detail, name='question_detail'),
+    path('questions/<int:pk>/answer/', views.answer_new, name='answer_new'),
+
 
 
 

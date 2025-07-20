@@ -1,0 +1,15 @@
+{% extends 'snippets/base.html' %}
+{% block content %}
+<h2>Q&A掲示板</h2>
+<a href="{% url 'question_new' %}">新しい質問を投稿</a>
+<ul>
+  {% for question in questions %}
+    <li>
+      <a href="{% url 'question_detail' question.pk %}">{{ question.title }}</a>
+      ({{ question.author.username }}, {{ question.created|date:"Y-m-d H:i" }})
+    </li>
+  {% empty %}
+    <li>まだ質問はありません。</li>
+  {% endfor %}
+</ul>
+{% endblock %}

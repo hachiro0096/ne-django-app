@@ -11,6 +11,46 @@ from .forms import StudyLogForm
 from datetime import date, timedelta
 from django.shortcuts import render, redirect
 from .forms import SnippetForm
+from .models import Question, Answer
+from .forms import QuestionForm, AnswerForm
+
+
+def question_list(request):
+    questions = Question.objects.all().order_by('-created')
+    return render(request, 'snippets/question_list.html', {'questions': questions})
+
+def question_detail(request, pk):
+    question = get_object_or_404(Question, pk=pk)
+    answers = question.answers.all()
+    return render(request, 'snippets/question_detail.html', {'question': question, 'answers': answers})
+
+@login_required
+def question_new(request):
+    if request.method == 'POST':
+        form = QuestionForm(request.POST)
+        if form.is_valid():
+            question = form.save(commit=False)
+            question.author = request.user
+            question.save()
+            return redirect('question_detail', pk=question.pk)
+    else:
+        form = QuestionForm()
+    return render(request, 'snippets/question_new.html', {'form': form})
+
+@login_required
+def answer_new(request, pk):
+    question = get_object_or_404(Question, pk=pk)
+    if request.method == 'POST':
+        form = AnswerForm(request.POST)
+        if form.is_valid():
+            answer = form.save(commit=False)
+            answer.author = request.user
+            answer.question = question
+            answer.save()
+            return redirect('question_detail', pk=pk)
+    else:
+        form = AnswerForm()
+    return render(request, 'snippets/answer_new.html', {'form': form, 'question': question})
 
 def snippet_new(request):
     if request.method == "POST":

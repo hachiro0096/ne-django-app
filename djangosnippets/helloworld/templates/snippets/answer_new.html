@@ -1,0 +1,9 @@
+{% extends 'snippets/base.html' %}
+{% block content %}
+<h2>回答する: {{ question.title }}</h2>
+<form method="post">{% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">回答を投稿</button>
+</form>
+<a href="{% url 'question_detail' question.pk %}">質問詳細へ戻る</a>
+{% endblock %}

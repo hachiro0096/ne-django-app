@@ -1,7 +1,8 @@
 {% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="ja">
 <head>
+    <meta charset="UTF-8">
     <title>StudyMate</title>
     <link rel="stylesheet" href="{% static 'snippets/css/style.css' %}">
 </head>
@@ -9,22 +10,21 @@
     <header>
         <h1>StudyMate</h1>
         <nav>
-  <a href="{% url 'log_list' %}">ホーム</a>
-  <a href="{% url 'dashboard' %}">ダッシュボード</a>
-  {% if user.is_authenticated %}
-    <span>こんにちは、{{ user.username }} さん</span>
-    <a href="{% url 'logout' %}">ログアウト
-    <p>あなたのポイント: {{ user.userprofile.points }}</p>
-  {% else %}
-    <a href="{% url 'login' %}">ログイン</a>
-  {% endif %}
-</nav>
-
-
+            <a href="{% url 'log_list' %}">ホーム</a>
+            <a href="{% url 'dashboard' %}">ダッシュボード</a>
+            <a href="{% url 'question_list' %}">Q&A掲示板</a>
+            {% if user.is_authenticated %}
+                <span>{{ user.username }} さん</span>
+                <a href="{% url 'logout' %}">ログアウト</a>
+                <span class="point">ポイント: {{ user.userprofile.points }}</span>
+            {% else %}
+                <a href="{% url 'login' %}">ログイン</a>
+            {% endif %}
+        </nav>
     </header>
-
-    <!-- ここに各ページごとの内容が入ります -->
-    {% block content %}{% endblock %}
-  </main>
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
 </body>
 </html>
