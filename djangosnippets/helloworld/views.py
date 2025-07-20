@@ -9,6 +9,19 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from .forms import StudyLogForm
 from datetime import date, timedelta
+from django.shortcuts import render, redirect
+from .forms import SnippetForm
+
+def snippet_new(request):
+    if request.method == "POST":
+        form = SnippetForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('log_list')  # ログ一覧に遷移（urls.pyのnameと合わせる）
+    else:
+        form = SnippetForm()
+    return render(request, 'snippets/snippet_new.html', {'form': form})
+
 
 @login_required
 def dashboard(request):

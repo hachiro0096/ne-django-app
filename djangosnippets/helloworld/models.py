@@ -3,6 +3,25 @@ from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
+# helloworld/models.py
+
+class Snippet(models.Model):
+    date = models.DateField()
+    subject = models.CharField(max_length=100)
+    hours = models.FloatField()
+    comment = models.TextField()
+    # 必要に応じてuserなども追加
+
+
+class Snippet(models.Model):
+    title = models.CharField(max_length=100)
+    content = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.title
+
+
 # バッジの種類
 class Badge(models.Model):
     name = models.CharField(max_length=50)
