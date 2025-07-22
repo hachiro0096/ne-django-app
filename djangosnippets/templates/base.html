@@ -1,11 +1,11 @@
-{% load bootstrap5 %}    {# django-bootstrap5 のタグライブラリをロード #}
+{% load django_bootstrap5 %}
 <!DOCTYPE html>
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
   <title>{% block title %}StudyMate{% endblock %}</title>
   {% bootstrap_css %}    {# Bootstrap の CSS を読み込む #}
-  {% bootstrap_javascript jquery='false' %}  {# Bootstrap の JS を読み込む #}
+  {% bootstrap_javascript %}
 </head>
 <body>
   <header>

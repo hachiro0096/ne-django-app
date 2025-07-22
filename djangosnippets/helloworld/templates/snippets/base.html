@@ -1,31 +1,72 @@
 {% load static %}
+{% load django_bootstrap5 %}
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <meta charset="UTF-8">
-    <title>StudyMate</title>
-    <link rel="stylesheet" href="{% static 'snippets/css/style.css' %}">
-</head>
+  <meta charset="UTF-8">
+  <title>{% block title %}StudyMate{% endblock %}</title>
 
+  {# Bootstrap5 の CSS を読み込む #}
+  {% bootstrap_css %}
+
+  {# 独自スタイルがあれば上書き用に #}
+  <link rel="stylesheet" href="{% static 'snippets/css/style.css' %}">
+
+  {# Bootstrap5 の JS を読み込む #}
+  {% bootstrap_javascript %}
+</head>
 <body>
-    <header>
-        <h1>StudyMate</h1>
-        <nav>
-            <a href="{% url 'log_list' %}">ホーム</a>
-            <a href="{% url 'dashboard' %}">ダッシュボード</a>
-            <a href="{% url 'question_list' %}">Q&A掲示板</a>
-            {% if user.is_authenticated %}
-                <span>{{ user.username }} さん</span>
-                <a href="{% url 'logout' %}">ログアウト</a>
-                <span class="point">ポイント: {{ user.userprofile.points }}</span>
-            {% else %}
-                <a href="{% url 'login' %}">ログイン</a>
-            {% endif %}
-        </nav>
-    </header>
-    <main>
-        {% block content %}
-        {% endblock %}
-    </main>
+  <nav class="navbar navbar-dark bg-primary">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="{% url 'log_list' %}">StudyMate</a>
+      <button class="navbar-toggler" type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#mainNavbar"
+              aria-controls="mainNavbar"
+              aria-expanded="false"
+              aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="mainNavbar">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'log_list' %}">ホーム</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'dashboard' %}">ダッシュボード</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'question_list' %}">Q&A掲示板</a>
+          </li>
+        </ul>
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+          {% if user.is_authenticated %}
+            <li class="nav-item">
+              <span class="nav-link">{{ user.username }} さん</span>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'logout' %}">ログアウト</a>
+            </li>
+            <li class="nav-item">
+              <span class="nav-link">ポイント: {{ user.userprofile.points }}</span>
+            </li>
+          {% else %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'login' %}">ログイン</a>
+            </li>
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container my-4">
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="bg-light text-center py-3 mt-auto">
+    &copy; 2025 StudyMate
+  </footer>
 </body>
 </html>
