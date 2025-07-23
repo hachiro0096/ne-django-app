@@ -38,9 +38,15 @@ class UserBadge(models.Model):
 # 学習記録
 class StudyLog(models.Model):
     SUBJECT_CHOICES = (
-        ('math', '数学'),
+        ('math',    '数学'),
         ('physics', '物理'),
-        ('prog', 'プログラミング'),
+        ('prog',    'プログラミング'),
+        ('chem',    '化学'),
+        ('bio',     '生物'),
+        ('eng',     '英語'),
+        ('hist',    '歴史'),
+        ('geo',     '地理'),
+        ('other',   'その他'),
     )
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     date = models.DateField()
