@@ -1,22 +1,41 @@
 {% extends 'snippets/base.html' %}
+{% load static %}
+
 {% block content %}
-<h2>プロフィール編集</h2>
-<form method="post" enctype="multipart/form-data" class="profile-form">
-    {% csrf_token %}
-    <div>
-        <label>アイコン画像</label><br>
-        {% if profile.icon %}
-            <img src="{{ profile.icon.url }}" alt="icon" style="width:80px;height:80px;border-radius:50%;">
-        {% endif %}
-        {{ form.icon }}
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-md-7">
+      <div class="card shadow-lg">
+        <div class="card-header bg-primary text-white">
+          <h3 class="mb-0"><i class="bi bi-person-circle"></i> プロフィール編集</h3>
+        </div>
+        <div class="card-body">
+          <form method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+            {% csrf_token %}
+            <div class="text-center mb-4">
+              {% if profile.icon %}
+                <img src="{{ profile.icon.url }}" class="rounded-circle shadow border border-2" style="width:120px; height:120px; object-fit:cover;" alt="icon">
+              {% else %}
+                <img src="{% static 'snippets/img/default_icon.png' %}" class="rounded-circle shadow border border-2" style="width:120px; height:120px; object-fit:cover;" alt="icon">
+              {% endif %}
+            </div>
+            <div class="mb-3">
+              <label for="id_icon" class="form-label fw-bold"><i class="bi bi-image"></i> アイコン画像を選択</label>
+              {{ form.icon }}
+            </div>
+            <div class="mb-3">
+              <label for="id_nickname" class="form-label fw-bold"><i class="bi bi-person-badge"></i> ニックネーム</label>
+              {{ form.nickname }}
+            </div>
+            <div class="mb-3 form-check">
+              {{ form.show_badges }}
+              <label for="id_show_badges" class="form-check-label">バッジをプロフィールに表示</label>
+            </div>
+            <button type="submit" class="btn btn-success w-100"><i class="bi bi-save"></i> 保存</button>
+          </form>
+        </div>
+      </div>
     </div>
-    <div>
-        <label>ニックネーム</label>
-        {{ form.nickname }}
-    </div>
-    <div>
-        <label>{{ form.show_badges }} バッジをプロフィールに表示</label>
-    </div>
-    <button type="submit">保存</button>
-</form>
+  </div>
+</div>
 {% endblock %}

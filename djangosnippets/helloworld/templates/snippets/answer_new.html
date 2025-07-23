@@ -1,9 +1,33 @@
 {% extends 'snippets/base.html' %}
+{% load static %}
 {% block content %}
-<h2>回答する: {{ question.title }}</h2>
-<form method="post">{% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit">回答を投稿</button>
-</form>
-<a href="{% url 'question_detail' question.pk %}">質問詳細へ戻る</a>
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-7">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="mb-0">
+                        <i class="bi bi-chat-left-text"></i> 回答する: <span style="font-weight:bold;">{{ question.title }}</span>
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="id_body" class="form-label">回答内容</label>
+                            <!-- form.bodyだけ -->
+                            {{ form.body }}
+                        </div>
+                        <button type="submit" class="btn btn-success px-4">
+                            <i class="bi bi-send"></i> 回答を投稿
+                        </button>
+                        <a href="{% url 'question_detail' question.pk %}" class="btn btn-outline-secondary ms-2">
+                            質問詳細へ戻る
+                        </a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

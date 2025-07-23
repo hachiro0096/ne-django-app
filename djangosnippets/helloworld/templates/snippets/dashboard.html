@@ -1,27 +1,71 @@
-{% extends "snippets/base.html" %}
+{% extends 'snippets/base.html' %}
+{% load static %}
 {% block content %}
-<h2>ダッシュボード</h2>
-<p>
-    <form method="get" style="display:flex; gap:1em; align-items:center;">
-        <label>年
-            <select name="year">
-                {% for y in year_range %}
-                    <option value="{{ y }}" {% if y == selected_year %}selected{% endif %}>{{ y }}</option>
-                {% endfor %}
-            </select>
-        </label>
-        <label>週
-            <select name="week">
-                {% for w in week_range %}
-                    <option value="{{ w }}" {% if w == selected_week %}selected{% endif %}>第{{ w }}週</option>
-                {% endfor %}
-            </select>
-        </label>
-        <button type="submit">表示</button>
-    </form>
-</p>
-<p>この週の学習合計：{{ total_hours }} 時間</p>
-<canvas id="studyChart" width="800" height="320"></canvas>
+<div class="container my-5">
+    <div class="row mb-4">
+        <div class="col-12 text-center">
+            <h2 class="fw-bold display-4" style="letter-spacing:0.08em;">
+                <i class="bi bi-bar-chart-fill text-primary me-2"></i>ダッシュボード
+            </h2>
+            <p class="fs-5 text-secondary">あなたの学習状況がひと目でわかる！</p>
+        </div>
+    </div>
+    <div class="row g-4 justify-content-center">
+        <!-- 集計カード -->
+        <div class="col-12 col-md-4">
+            <div class="card shadow rounded-4 border-0 text-center h-100 bg-gradient" style="background: linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%);">
+                <div class="card-body py-4">
+                    <h5 class="card-title mb-3"><i class="bi bi-trophy-fill text-warning me-2"></i>今週の学習合計</h5>
+                    <span class="display-4 fw-bold text-primary">{{ total_hours }}</span>
+                    <span class="fs-5 text-dark">時間</span>
+                </div>
+            </div>
+        </div>
+        <!-- フィルター -->
+        <div class="col-12 col-md-4">
+            <div class="card rounded-4 border-0 shadow h-100">
+                <div class="card-body text-center">
+                    <form method="get" class="d-flex flex-wrap justify-content-center align-items-end gap-2">
+                        <div>
+                            <label class="form-label mb-0">年</label>
+                            <select name="year" class="form-select">
+                                {% for y in year_range %}
+                                    <option value="{{ y }}" {% if y == selected_year %}selected{% endif %}>{{ y }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div>
+                            <label class="form-label mb-0">週</label>
+                            <select name="week" class="form-select">
+                                {% for w in week_range %}
+                                    <option value="{{ w }}" {% if w == selected_week %}selected{% endif %}>{{ w }}週</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-search"></i> 表示
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- チャートエリア -->
+    <div class="row mt-5 justify-content-center">
+        <div class="col-12 col-lg-10">
+            <div class="card rounded-4 border-0 shadow-lg">
+                <div class="card-body">
+                    <h5 class="mb-3 text-primary"><i class="bi bi-graph-up-arrow"></i> 学習時間グラフ</h5>
+                    <canvas id="studyChart" height="100"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Chart.js CDN -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
 const ctx = document.getElementById('studyChart').getContext('2d');
@@ -30,23 +74,48 @@ const studyChart = new Chart(ctx, {
     data: {
         labels: {{ labels|safe }},
         datasets: [{
-            label: '学習時間 (h)',
+            label: "学習時間 (h)",
             data: {{ data|safe }},
-            backgroundColor: 'rgba(0, 160, 255, 0.3)',
-            borderColor: 'rgba(0,160,255,1)',
-            borderWidth: 1
+            backgroundColor: "rgba(30,144,255,0.4)",
+            borderColor: "rgba(30,144,255,1)",
+            borderWidth: 2,
+            borderRadius: 12,
+            hoverBackgroundColor: "rgba(30,144,255,0.7)",
         }]
     },
     options: {
+        plugins: {
+            legend: {
+                display: true,
+                labels: { font: { size: 18 } }
+            },
+            title: {
+                display: false
+            },
+            tooltip: {
+                enabled: true,
+                callbacks: {
+                    label: function(context) {
+                        return ` ${context.parsed.y} 時間`;
+                    }
+                }
+            }
+        },
         scales: {
             y: {
                 beginAtZero: true,
-                ticks: {
-                    stepSize: 1
-                }
+                title: { display: true, text: "時間", font: { size: 16 } },
+                ticks: { stepSize: 1, font: { size: 14 } }
+            },
+            x: {
+                title: { display: true, text: "日付", font: { size: 16 } },
+                ticks: { font: { size: 14 } }
             }
-        }
+        },
+        responsive: true,
+        animation: { duration: 800, easing: "easeOutQuart" }
     }
 });
 </script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 {% endblock %}
