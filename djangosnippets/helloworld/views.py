@@ -13,6 +13,19 @@ from django.shortcuts import render, redirect
 from .forms import SnippetForm
 from .models import Question, Answer
 from .forms import QuestionForm, AnswerForm
+from .forms import ProfileForm
+
+@login_required
+def profile_edit(request):
+    profile, created = UserProfile.objects.get_or_create(user=request.user)
+    if request.method == 'POST':
+        form = ProfileForm(request.POST, request.FILES, instance=profile)
+        if form.is_valid():
+            form.save()
+            return redirect('profile_edit')  # 保存後自分にリダイレクト（または他ページへ）
+    else:
+        form = ProfileForm(instance=profile)
+    return render(request, 'snippets/profile_edit.html', {'form': form, 'profile': profile})
 
 
 def question_list(request):

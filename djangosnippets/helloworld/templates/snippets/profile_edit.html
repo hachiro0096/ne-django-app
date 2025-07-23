@@ -1,0 +1,22 @@
+{% extends 'snippets/base.html' %}
+{% block content %}
+<h2>プロフィール編集</h2>
+<form method="post" enctype="multipart/form-data" class="profile-form">
+    {% csrf_token %}
+    <div>
+        <label>アイコン画像</label><br>
+        {% if profile.icon %}
+            <img src="{{ profile.icon.url }}" alt="icon" style="width:80px;height:80px;border-radius:50%;">
+        {% endif %}
+        {{ form.icon }}
+    </div>
+    <div>
+        <label>ニックネーム</label>
+        {{ form.nickname }}
+    </div>
+    <div>
+        <label>{{ form.show_badges }} バッジをプロフィールに表示</label>
+    </div>
+    <button type="submit">保存</button>
+</form>
+{% endblock %}

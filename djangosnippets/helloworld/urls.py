@@ -16,6 +16,11 @@ urlpatterns = [
     path('questions/<int:pk>/answer/', views.answer_new, name='answer_new'),
 
 
+    path('profile/edit/', views.profile_edit, name='profile_edit'),
+
+
+
+
 
 
 
