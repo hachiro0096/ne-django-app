@@ -1,0 +1,19 @@
+{# …/templates/snippets/log_edit.html #}
+{% extends "snippets/base.html" %}
+{% load django_bootstrap5 %}
+
+{% block title %}学習ログ編集{% endblock %}
+
+{% block content %}
+<div class="container mt-5" style="max-width: 600px;">
+  <h2 class="mb-4">学習ログを編集</h2>
+  <form method="post">
+    {% csrf_token %}
+    {% bootstrap_form form %}
+    <div class="d-grid">
+      <button type="submit" class="btn btn-primary">更新する</button>
+      <a href="{% url 'log_list' %}" class="btn btn-secondary mt-2">キャンセル</a>
+    </div>
+  </form>
+</div>
+{% endblock %}
