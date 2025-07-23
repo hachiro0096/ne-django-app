@@ -1,16 +1,27 @@
-{# djangosnippets/templates/registration/login.html #}
-{% extends "base.html" %}
+{% extends 'snippets/base.html' %}
 
 {% block content %}
-  <h2>ログイン</h2>
-  <form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">ログイン</button>
-  </form>
-
-  <p>
-    アカウントをお持ちでない方は
-    <a href="{% url 'signup' %}">こちらから登録</a>
-  </p>
+<div class="d-flex justify-content-center align-items-center" style="min-height:65vh;">
+  <div class="card shadow-sm p-4" style="min-width:340px; max-width:380px; width:100%;">
+    <div class="text-center mb-4">
+      <i class="bi bi-person-circle" style="font-size:3rem; color:#0d6efd;"></i>
+      <h2 class="fw-bold mt-2">ログイン</h2>
+    </div>
+    <form method="post">
+      {% csrf_token %}
+      <div class="mb-3">
+        <label for="id_username" class="form-label">ユーザー名</label>
+        <input type="text" name="username" class="form-control" id="id_username" autofocus required>
+      </div>
+      <div class="mb-3">
+        <label for="id_password" class="form-label">パスワード</label>
+        <input type="password" name="password" class="form-control" id="id_password" required>
+      </div>
+      <button type="submit" class="btn btn-primary w-100 fw-bold">ログイン</button>
+    </form>
+    <div class="mt-3 text-center">
+      <small class="text-muted">アカウントをお持ちでない方は <a href="{% url 'signup' %}">こちらから登録</a></small>
+    </div>
+  </div>
+</div>
 {% endblock %}

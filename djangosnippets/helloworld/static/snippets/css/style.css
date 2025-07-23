@@ -161,3 +161,15 @@ body {
   color: var(--primary-dark);
   text-decoration: underline;
 }
+
+.card {
+    border-radius: 1.5rem;
+    border: none;
+    background: #fff;
+}
+body {
+    background: #f8fafc;
+}
+.form-label {
+    font-weight: 600;
+}
