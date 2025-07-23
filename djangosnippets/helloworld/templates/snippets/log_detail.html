@@ -1,11 +1,62 @@
 {% extends "snippets/base.html" %}
+{% load static %}
+{% load django_bootstrap5 %}
+
 {% block content %}
-<h2>学習ログ詳細</h2>
-<p>日付: {{ log.date }}</p>
-<p>科目: {{ log.get_subject_display }}</p>
-<p>時間: {{ log.hours }} 時間</p>
-<p>コメント: {{ log.comment }}</p>
-<a href="{% url 'log_edit' log.pk %}">編集</a>
-<a href="{% url 'log_delete' log.pk %}">削除</a>
-<a href="{% url 'log_list' %}">一覧に戻る</a>
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+
+      <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white d-flex align-items-center">
+          <i class="bi bi-journal-text fs-3 me-2"></i>
+          <h4 class="mb-0">学習ログ詳細</h4>
+        </div>
+
+        <div class="card-body">
+          <dl class="row mb-0">
+            <dt class="col-sm-4 text-secondary">📅 日付</dt>
+            <dd class="col-sm-8">{{ log.date }}</dd>
+
+            <dt class="col-sm-4 text-secondary">📚 科目</dt>
+            <dd class="col-sm-8">{{ log.get_subject_display }}</dd>
+
+            <dt class="col-sm-4 text-secondary">⏰ 時間</dt>
+            <dd class="col-sm-8">{{ log.hours }} 時間</dd>
+
+            {% if log.comment %}
+            <dt class="col-sm-4 text-secondary">💬 コメント</dt>
+            <dd class="col-sm-8">{{ log.comment|linebreaksbr }}</dd>
+            {% endif %}
+
+            {% if log.attachment %}
+            <dt class="col-sm-4 text-secondary">📎 添付ファイル</dt>
+            <dd class="col-sm-8">
+              <a href="{{ log.attachment.url }}" class="link-primary" target="_blank">
+                <i class="bi bi-paperclip"></i> ダウンロード
+              </a>
+            </dd>
+            {% endif %}
+          </dl>
+        </div>
+
+        <div class="card-footer text-end bg-light">
+          <a href="{% url 'log_edit' log.pk %}"
+             class="btn btn-outline-primary me-2">
+            <i class="bi bi-pencil-square"></i> 編集
+          </a>
+          <a href="{% url 'log_delete' log.pk %}"
+             class="btn btn-outline-danger me-2">
+            <i class="bi bi-trash"></i> 削除
+          </a>
+          <a href="{% url 'log_list' %}"
+             class="btn btn-primary">
+            <i class="bi bi-list-ul"></i> 一覧へ戻る
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
 {% endblock %}
