@@ -1,103 +1,163 @@
+:root {
+  /* カラーパレット */
+  --primary:       #2a6df6;
+  --primary-dark:  #22507c;
+  --primary-light: #66c0f4;
+  --bg-light:      #f4faff;
+  --text-light:    #fff;
+  --text-dark:     #333;
+  --shadow-strong: rgba(66, 165, 245, 0.3);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  color: var(--text-dark);
+}
+
+/* ヘッダー */
 .header-nav {
-    background: #2c639b;
-    color: #fff;
-    padding: 10px 20px;
-    position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--primary);
+  color: var(--text-light);
+  padding: 0.75rem 1.5rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  position: relative;
+  z-index: 100;
 }
-.menu {
-    display: none;
-    flex-direction: column;
-    background: #2c639b;
-    position: absolute;
-    top: 40px;
-    left: 0;
-    width: 200px;
-    z-index: 10;
-}
-#menu-toggle:checked + .menu-btn + .menu {
-    display: flex;
-}
-.menu-btn {
-    cursor: pointer;
-    width: 30px;
-    height: 30px;
-    display: inline-block;
-    vertical-align: middle;
-    position: relative;
-}
-.menu-btn span, .menu-btn span:before, .menu-btn span:after {
-    display: block;
-    background: #fff;
-    height: 4px;
-    width: 100%;
-    border-radius: 2px;
-    position: absolute;
-    content: '';
-    transition: .3s;
-}
-.menu-btn span {
-    position: relative;
-    top: 13px;
-}
-.menu-btn span:before {
-    top: -10px;
-    position: relative;
-}
-.menu-btn span:after {
-    top: 10px;
-    position: relative;
-}
+
+/* ハンバーガー & メニュー */
 #menu-toggle {
-    display: none;
+  display: none;
 }
-@media (min-width: 600px) {
-    .menu {
-        display: flex !important;
-        flex-direction: row;
-        position: static;
-        width: auto;
-        background: none;
-    }
-    .menu-btn {
-        display: none;
-    }
+
+.menu-btn {
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease;
 }
+
+.menu-btn span,
+.menu-btn span::before,
+.menu-btn span::after {
+  content: '';
+  display: block;
+  width: 24px;
+  height: 3px;
+  background: var(--text-light);
+  border-radius: 2px;
+  position: absolute;
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.menu-btn span::before { transform: translateY(-8px); }
+.menu-btn span::after  { transform: translateY( 8px); }
+
+/* トグル時に✕アイコンへ */
+#menu-toggle:checked + .menu-btn span {
+  background: transparent;
+}
+#menu-toggle:checked + .menu-btn span::before {
+  transform: rotate(45deg);
+}
+#menu-toggle:checked + .menu-btn span::after {
+  transform: rotate(-45deg);
+}
+
+/* メニュー本体 */
+.menu {
+  display: none;
+  flex-direction: column;
+  background: var(--primary);
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  padding: 0.5rem 0;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  z-index: 90;
+}
+
+#menu-toggle:checked + .menu-btn + .menu {
+  display: flex;
+}
+
+/* メニュー項目 */
 .menu a {
-    color: #fff;
-    padding: 10px 20px;
-    text-decoration: none;
-    transition: background .2s;
+  color: var(--text-light);
+  padding: 0.75rem 1.5rem;
+  text-decoration: none;
+  transition: background 0.2s, color 0.2s;
 }
 .menu a:hover {
-    background: #22507c;
+  background: var(--primary-dark);
+  color: var(--primary-light);
 }
 
+/* 大画面時は常に展開 */
+@media (min-width: 600px) {
+  .menu {
+    display: flex !important;
+    flex-direction: row;
+    position: static;
+    width: auto;
+    background: transparent;
+    box-shadow: none;
+  }
+  .menu-btn {
+    display: none;
+  }
+  .menu a {
+    padding: 0 1rem;
+  }
+}
+
+/* グラデボタン */
 .btn-gradient-primary {
-    background: linear-gradient(90deg, #2a6df6 0%, #66c0f4 100%);
-    border: none;
-    color: #fff;
-    transition: 0.2s;
+  background: linear-gradient(90deg, var(--primary) 0%, var(--primary-light) 100%);
+  border: none;
+  color: var(--text-light);
+  padding: 0.5rem 1rem;
+  border-radius: 0.25rem;
+  transition: background 0.3s, transform 0.1s;
 }
 .btn-gradient-primary:hover {
-    background: linear-gradient(90deg, #2471a3 0%, #3498db 100%);
-    color: #fff;
+  background: linear-gradient(90deg, var(--primary-dark) 0%, var(--primary) 100%);
+  transform: translateY(-1px);
 }
 
+/* ログカード */
 .log-card {
-    transition: box-shadow 0.2s, transform 0.1s;
+  background: var(--bg-light);
+  border-radius: 0.5rem;
+  transition: box-shadow 0.2s, transform 0.1s;
+  padding: 1rem;
+  margin-bottom: 1rem;
 }
 .log-card:hover {
-    box-shadow: 0 6px 24px rgba(66, 165, 245, 0.18);
-    transform: translateY(-2px) scale(1.015);
-    border-left: 6px solid #2a6df6;
-    background: #f4faff;
+  box-shadow: 0 6px 24px var(--shadow-strong);
+  transform: translateY(-2px) scale(1.02);
+  border-left: 5px solid var(--primary);
 }
+
+/* リンク装飾 */
 .log-link {
-    text-decoration: none;
-    color: #2a6df6;
-    transition: color 0.15s;
+  color: var(--primary);
+  text-decoration: none;
+  transition: color 0.15s;
 }
 .log-link:hover {
-    color: #1864ab;
-    text-decoration: underline;
+  color: var(--primary-dark);
+  text-decoration: underline;
 }
