@@ -1,24 +1,58 @@
 {% extends 'snippets/base.html' %}
+{% load static %}
 {% block content %}
-<h2>{{ question.title }}</h2>
-<p>{{ question.body|linebreaksbr }}</p>
-<p>投稿者: {{ question.author.username }} | 投稿日: {{ question.created|date:"Y-m-d H:i" }}</p>
-
-<hr>
-<h3>回答</h3>
-<ul>
-  {% for answer in answers %}
-    <li>{{ answer.body|linebreaksbr }}<br>
-        <small>by {{ answer.author.username }} ({{ answer.created|date:"Y-m-d H:i" }})</small>
-    </li>
-  {% empty %}
-    <li>まだ回答がありません。</li>
-  {% endfor %}
-</ul>
-
-{% if user.is_authenticated %}
-  <a href="{% url 'answer_new' question.pk %}">この質問に回答する</a>
-{% else %}
-  <a href="{% url 'login' %}">ログインして回答</a>
-{% endif %}
+<div class="container py-4">
+    <!-- 質問カード -->
+    <div class="card mb-4 shadow-sm">
+        <div class="card-body">
+            <div class="d-flex align-items-center mb-3">
+                {% if question.author.userprofile.icon %}
+                    <img src="{{ question.author.userprofile.icon.url }}" alt="icon" class="rounded-circle" width="48" height="48" style="object-fit:cover;">
+                {% else %}
+                    <img src="{% static 'snippets/img/default_icon.png' %}" alt="icon" class="rounded-circle" width="48" height="48" style="object-fit:cover;">
+                {% endif %}
+                <div class="ms-3">
+                    <div class="fw-bold fs-5">{{ question.author.userprofile.nickname }}</div>
+                    <div class="text-muted small">
+                        投稿日: {{ question.created|date:"Y-m-d H:i" }}
+                    </div>
+                </div>
+            </div>
+            <h2 class="card-title mt-2 mb-3">{{ question.title }}</h2>
+            <p class="card-text fs-5" style="white-space:pre-line;">{{ question.body|linebreaksbr }}</p>
+        </div>
+    </div>
+    <!-- 回答一覧 -->
+    <div class="card mb-3 shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <strong><i class="bi bi-chat-dots"></i> 回答</strong>
+        </div>
+        <ul class="list-group list-group-flush">
+            {% for answer in answers %}
+                <li class="list-group-item">
+                    <div class="d-flex align-items-center mb-2">
+                        {% if answer.author.userprofile.icon %}
+                            <img src="{{ answer.author.userprofile.icon.url }}" alt="icon" class="rounded-circle" width="36" height="36" style="object-fit:cover;">
+                        {% else %}
+                            <img src="{% static 'snippets/img/default_icon.png' %}" alt="icon" class="rounded-circle" width="36" height="36" style="object-fit:cover;">
+                        {% endif %}
+                        <span class="ms-2 fw-bold">{{ answer.author.userprofile.nickname }}</span>
+                        <span class="ms-3 text-muted small">{{ answer.created|date:"Y-m-d H:i" }}</span>
+                    </div>
+                    <div style="white-space:pre-line;">{{ answer.body|linebreaksbr }}</div>
+                </li>
+            {% empty %}
+                <li class="list-group-item text-muted">まだ回答がありません。</li>
+            {% endfor %}
+        </ul>
+    </div>
+    <!-- 回答ボタン -->
+    <div class="text-end">
+        {% if user.is_authenticated %}
+            <a href="{% url 'answer_new' question.pk %}" class="btn btn-success shadow">この質問に回答する</a>
+        {% else %}
+            <a href="{% url 'login' %}" class="btn btn-outline-primary">ログインして回答</a>
+        {% endif %}
+    </div>
+</div>
 {% endblock %}

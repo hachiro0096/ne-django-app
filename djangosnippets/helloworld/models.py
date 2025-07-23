@@ -7,7 +7,7 @@ from django.dispatch import receiver
 class Badge(models.Model):
     name = models.CharField(max_length=50)
     description = models.CharField(max_length=100)
-    threshold = models.PositiveIntegerField(help_text="このポイント数で獲得")
+    threshold = models.PositiveIntegerField(help_text="10")
     date_awarded = models.DateField(auto_now_add=True)
 
     def __str__(self):

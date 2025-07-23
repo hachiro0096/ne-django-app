@@ -71,3 +71,33 @@
 .menu a:hover {
     background: #22507c;
 }
+
+.btn-gradient-primary {
+    background: linear-gradient(90deg, #2a6df6 0%, #66c0f4 100%);
+    border: none;
+    color: #fff;
+    transition: 0.2s;
+}
+.btn-gradient-primary:hover {
+    background: linear-gradient(90deg, #2471a3 0%, #3498db 100%);
+    color: #fff;
+}
+
+.log-card {
+    transition: box-shadow 0.2s, transform 0.1s;
+}
+.log-card:hover {
+    box-shadow: 0 6px 24px rgba(66, 165, 245, 0.18);
+    transform: translateY(-2px) scale(1.015);
+    border-left: 6px solid #2a6df6;
+    background: #f4faff;
+}
+.log-link {
+    text-decoration: none;
+    color: #2a6df6;
+    transition: color 0.15s;
+}
+.log-link:hover {
+    color: #1864ab;
+    text-decoration: underline;
+}
