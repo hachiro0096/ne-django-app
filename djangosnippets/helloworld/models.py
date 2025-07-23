@@ -3,20 +3,6 @@ from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
-# helloworld/models.py
-
-class Snippet(models.Model):
-    date = models.DateField()
-    subject = models.CharField(max_length=100)
-    hours = models.FloatField()
-    comment = models.TextField()
-    # 必要に応じてuserなども追加
-
-    def __str__(self):
-        return self.subject  # または comment や他のフィールド名
-
-
-
 # バッジの種類
 class Badge(models.Model):
     name = models.CharField(max_length=50)
@@ -27,11 +13,15 @@ class Badge(models.Model):
     def __str__(self):
         return self.name
 
-# ユーザープロフィール（ポイント・現在のバッジ）
+# ユーザープロフィール（ポイント・現在のバッジなど＋追加フィールド）
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     points = models.PositiveIntegerField(default=0)
     badge = models.ForeignKey(Badge, null=True, blank=True, on_delete=models.SET_NULL)
+    # プロフィール編集用フィールド
+    nickname = models.CharField(max_length=30, blank=True)
+    icon = models.ImageField(upload_to='icons/', null=True, blank=True)
+    show_badges = models.BooleanField(default=True)
 
     def __str__(self):
         return self.user.username
@@ -61,13 +51,17 @@ class StudyLog(models.Model):
     def __str__(self):
         return f"{self.user.username} - {self.date} - {self.subject}"
 
-# Userが作成された時、自動でUserProfileも作る
-@receiver(post_save, sender=User)
-def create_user_profile(sender, instance, created, **kwargs):
-    if created:
-        UserProfile.objects.create(user=instance)
+# Snippetモデル（おそらく使っている場合）
+class Snippet(models.Model):
+    date = models.DateField()
+    subject = models.CharField(max_length=100)
+    hours = models.FloatField()
+    comment = models.TextField()
 
+    def __str__(self):
+        return self.subject
 
+# Q&A 投稿・回答
 class Question(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='questions')
     title = models.CharField(max_length=200)
@@ -85,3 +79,9 @@ class Answer(models.Model):
 
     def __str__(self):
         return f"{self.author.username}さんの回答"
+
+# User作成時に自動でUserProfileも作る
+@receiver(post_save, sender=User)
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        UserProfile.objects.create(user=instance)

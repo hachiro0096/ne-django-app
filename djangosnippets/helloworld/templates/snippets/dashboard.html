@@ -1,40 +1,52 @@
 {% extends "snippets/base.html" %}
 {% block content %}
 <h2>ダッシュボード</h2>
-<p>直近7日間の学習合計：{{ total_hours }} 時間</p>
-<canvas id="studyChart" width="400" height="150"></canvas>
+<p>
+    <form method="get" style="display:flex; gap:1em; align-items:center;">
+        <label>年
+            <select name="year">
+                {% for y in year_range %}
+                    <option value="{{ y }}" {% if y == selected_year %}selected{% endif %}>{{ y }}</option>
+                {% endfor %}
+            </select>
+        </label>
+        <label>週
+            <select name="week">
+                {% for w in week_range %}
+                    <option value="{{ w }}" {% if w == selected_week %}selected{% endif %}>第{{ w }}週</option>
+                {% endfor %}
+            </select>
+        </label>
+        <button type="submit">表示</button>
+    </form>
+</p>
+<p>この週の学習合計：{{ total_hours }} 時間</p>
+<canvas id="studyChart" width="800" height="320"></canvas>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
-  const ctx = document.getElementById('studyChart').getContext('2d');
-  const studyChart = new Chart(ctx, {
-      type: 'bar',
-      data: {
-          labels: {{ labels|safe }},
-          datasets: [{
-              label: '学習時間 (h)',
-              data: {{ data|safe }},
-              borderWidth: 1
-          }]
-      },
-      options: {
-          scales: {
-              y: {
-                  beginAtZero: true,
-                  suggestedMax: 5
-              }
-          }
-      }
-  });
+const ctx = document.getElementById('studyChart').getContext('2d');
+const studyChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: {{ labels|safe }},
+        datasets: [{
+            label: '学習時間 (h)',
+            data: {{ data|safe }},
+            backgroundColor: 'rgba(0, 160, 255, 0.3)',
+            borderColor: 'rgba(0,160,255,1)',
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true,
+                ticks: {
+                    stepSize: 1
+                }
+            }
+        }
+    }
+});
 </script>
 {% endblock %}
-
-{% if user.is_authenticated %}
-    <h3>あなたのバッジ</h3>
-    <ul>
-    {% for userbadge in user.userbadge_set.all %}
-        <li>{{ userbadge.badge.name }}（{{ userbadge.badge.description }}）</li>
-    {% empty %}
-        <li>まだバッジはありません。</li>
-    {% endfor %}
-    </ul>
-{% endif %}

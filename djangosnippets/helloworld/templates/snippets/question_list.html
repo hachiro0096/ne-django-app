@@ -1,15 +1,28 @@
 {% extends 'snippets/base.html' %}
+{% load static %}
 {% block content %}
 <h2>Q&A掲示板</h2>
 <a href="{% url 'question_new' %}">新しい質問を投稿</a>
 <ul>
-  {% for question in questions %}
-    <li>
-      <a href="{% url 'question_detail' question.pk %}">{{ question.title }}</a>
-      ({{ question.author.username }}, {{ question.created|date:"Y-m-d H:i" }})
-    </li>
-  {% empty %}
-    <li>まだ質問はありません。</li>
-  {% endfor %}
+    {% for question in questions %}
+        <li>
+            <!-- アイコン表示（なければデフォルト） -->
+            {% if question.author.userprofile.icon %}
+                <img src="{{ question.author.userprofile.icon.url }}" alt="icon" style="width:32px; height:32px; border-radius:50%; vertical-align:middle;">
+            {% else %}
+                <img src="{% static 'snippets/img/default_icon.png' %}" alt="icon" style="width:32px; height:32px; border-radius:50%; vertical-align:middle;">
+            {% endif %}
+            <!-- ニックネーム表示 -->
+            <span style="font-weight:bold;">{{ question.author.userprofile.nickname }}</span>
+            <!-- タイトル・詳細ページリンク -->
+            <a href="{% url 'question_detail' question.pk %}">{{ question.title }}</a>
+            <!-- 投稿日時 -->
+            <span style="color:#888; font-size: 0.95em;">
+                {{ question.created|date:"Y-m-d H:i" }}
+            </span>
+        </li>
+    {% empty %}
+        <li>まだ質問はありません。</li>
+    {% endfor %}
 </ul>
 {% endblock %}
