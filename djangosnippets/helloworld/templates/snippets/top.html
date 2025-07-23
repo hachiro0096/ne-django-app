@@ -1,23 +1,69 @@
 {% extends "snippets/base.html" %}
-
+{% load django_bootstrap5 %}
 {% block content %}
-  <h1>ようこそ、学習ログアプリへ！</h1>
-  {% if user.is_authenticated %}
-    <p>{{ user.username }} さん、こんにちは。</p>
-    <p>あなたのポイント: {{ user.userprofile.points }}</p>
-    <h3>あなたのバッジ</h3>
-    <ul>
-      {% for userbadge in user.userbadge_set.all %}
-        <li>{{ userbadge.badge.name }}（{{ userbadge.badge.description }}）</li>
-      {% empty %}
-        <li>まだバッジはありません。</li>
-      {% endfor %}
-    </ul>
-    <p><a href="{% url 'log_list' %}">ログ一覧を見る</a></p>
-    <p><a href="{% url 'log_new' %}">新しいログを書く</a></p>
-    <p><a href="{% url 'dashboard' %}">ダッシュボード</a></p>
-    <p><a href="{% url 'logout' %}">ログアウト</a></p>
-  {% else %}
-    <p><a href="{% url 'login' %}">ログイン</a></p>
-  {% endif %}
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+
+      <!-- Hero カード -->
+      <div class="card shadow-lg">
+        <div class="card-body text-center p-5">
+          <h1 class="display-4 mb-3">StudyMate へようこそ！</h1>
+
+          {% if user.is_authenticated %}
+            <p class="lead mb-4">
+              <i class="bi bi-person-circle me-2"></i>
+              {{ user.username }} さん、こんにちは。
+            </p>
+            <p class="mb-3">
+              あなたのポイント:
+              <span class="badge bg-gradient-primary px-3 py-2">
+                {{ user.userprofile.points }}
+              </span>
+            </p>
+
+            <h5 class="mb-3">あなたのバッジ</h5>
+            <div class="d-flex flex-wrap justify-content-center mb-4">
+              {% for ub in user.userbadge_set.all %}
+                <div class="card m-2 text-center p-3" style="width:120px;">
+                  <i class="bi bi-award-fill text-warning fs-2"></i>
+                  <div class="fw-bold">{{ ub.badge.name }}</div>
+                  <small class="text-muted">{{ ub.badge.description }}</small>
+                </div>
+              {% empty %}
+                <p>まだバッジはありません。</p>
+              {% endfor %}
+            </div>
+
+            <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+              <a class="btn btn-primary btn-lg me-sm-2" href="{% url 'log_list' %}">
+                <i class="bi bi-list-check me-1"></i> ログ一覧へ
+              </a>
+              <a class="btn btn-success btn-lg me-sm-2" href="{% url 'log_new' %}">
+                <i class="bi bi-plus-lg me-1"></i> 新しいログ
+              </a>
+              <a class="btn btn-info btn-lg" href="{% url 'dashboard' %}">
+                <i class="bi bi-speedometer2 me-1"></i> ダッシュボード
+              </a>
+            </div>
+
+          {% else %}
+            <p class="lead mb-4">このアプリで学習記録をカンタンに管理・分析しましょう！</p>
+            <div class="d-grid gap-3 col-sm-8 col-md-6 mx-auto">
+              <a class="btn btn-primary btn-lg" href="{% url 'login' %}">
+                <i class="bi bi-box-arrow-in-right me-1"></i> ログイン
+              </a>
+              <a class="btn btn-outline-secondary btn-lg" href="{% url 'signup' %}">
+                <i class="bi bi-person-plus me-1"></i> 新規登録
+              </a>
+            </div>
+          {% endif %}
+
+        </div>
+      </div>
+      <!-- /Hero カード -->
+
+    </div>
+  </div>
+</div>
 {% endblock %}
